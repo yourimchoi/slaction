@@ -19,9 +19,8 @@ This repository contains code for:
 ```
 SlAction/
 ├── ckpt/
-│   └── exp_000/
-│       ├── epoch=00-val_f1=0.70.ckpt
-│       └── last.ckpt
+│     ├── epoch=00-val_f1=0.70.ckpt
+│     └── last.ckpt
 ├── code/
 │   ├── play.sh
 │   ├── exp_config/

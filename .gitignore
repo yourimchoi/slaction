@@ -1,0 +1,13 @@
+data
+results
+play.sh
+readme.txt
+__pycache__/
+*.pyc
+*.pkl
+wandb/
+logs/
+data/
+.env
+.ipynb_checkpoints/
+.DS_Store
