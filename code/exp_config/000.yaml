@@ -1,0 +1,99 @@
+# Dataset Configuration
+# train.py
+train_set: A_train
+valid_set: A_valid
+# test.py
+test_sets: ['A_train', 'A_valid', 'A_test']
+
+# # Analysis.py
+# analysis_sets: ['A']
+
+# # Regression.py
+signal: False
+
+base_dir: ../../results/analysis
+summary_file_path: ../../data/demo_results/summary.csv
+label_dir: ../../data/demo_results/labels
+fallback_csv_file_path: ../../data/demo_results/labels
+res_dir: ../../data/demo_results
+
+experiments:
+  - name: A_train_valid_vs_A_test
+    train_sets: [A_train_valid]
+    test_sets: [A_test]
+
+
+# Training Parameters
+resume: True                       # Resume from checkpoint (False: train from scratch)
+transfer_from_ckpt: True           # Transfer learning from checkpoint (False: use best checkpoint)
+resume_path: ../../data/weight/movineta2_A_center_pretrained.ckpt
+
+epochs_warmup: 1   
+epochs_progressive_unfreeze: 1     # Progressive unfreezing phase
+epochs_finetune: 1
+learning_rate: 0.001
+optimizer: AdamW
+scheduler: 'constant'              # Options: ['constant', 'cosine_warmup']
+scheduler_params:
+  cosine_warmup:
+    T_0: 1
+    T_mult: 2
+    eta_min: 0.00001
+    T_up: 1
+    gamma: 1
+batchsize: 32
+label_smoothing: 0.1
+
+# Model Configuration
+model: 'movinet_a2'
+squeeze_rgb: True                  # Use MoviNet_A2_50 (True) or MoviNet_A2_150 (False)
+pretrained: True                   # Use pretrained weights for MoviNet_A2
+init_input: False
+
+# Data Augmentation
+use_mixup: True          
+mixup_alpha: 1          
+accumulate_grad_batches: 8
+rotation: True                     # Apply rotation augmentation
+rotation_angle_range: [-45, 45]   # Rotation angle range in degrees
+perspective: False                 # Apply perspective transformation
+randompadding: False               # Apply random padding augmentation
+color_jitter_brightness: [0.7, 1.3]
+color_jitter_contrast: [0.7, 1.3]
+random_resized_crop_scale: [0.7, 1.0]
+random_resized_crop_ratio: [0.75, 1.33]
+
+# Data Configuration
+label_column: 'RA_Pose_New'       # Options: [Respiratory Arousal, Desat, Stage, RA-Pose, RA_Pose_New]
+num_class: 4
+sample_ratio: 1.0                  # Data sampling ratio (undersample Non-RA)
+weighted_sampling: True            # Enable weighted sampling for class balance
+
+base_tfrecord_path: ../../results/tfrecord    # Relative path from code/src/core/
+csv_file_path: ../../data/demo_labels         # Relative path from code/src/core/
+video_length_sec: 30               # Video duration in seconds (30 or 60)
+
+# Post-processing
+control_confidence: True
+skip_threshold_optimization: True
+
+# Results Directory Configuration
+results_base_dir: ../../results   # Base directory for all results
+
+# Result subdirectories (relative to results_base_dir)
+results_subdirs:
+  weights: weight                  # Model checkpoints
+  temp: temp                       # Temporary files (best model paths)
+  profiler: profiler_logs          # Profiler logs
+  results: result                  # Classification results
+  analysis: analysis               # Analysis outputs
+  tfrecord: tfrecord               # TFRecord data files
+
+# Legacy paths (deprecated - use results_base_dir + results_subdirs instead)
+results_dir: ../../results/result  # Classification results directory
+base_dir: ../../results/analysis   # Analysis output directory
+
+# Weights & Biases Configuration
+wandb_project: SlAction
+resume_from_checkpoint: False
+wandb_id: 5e7y5yig
