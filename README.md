@@ -1,4 +1,4 @@
-# SlAction: Infrared Video-Based Sleep Apnea Detection
+# Non-contact On-device Detection of Obstructive Sleep Apnea from Infrared Video
 
 ## Overview
 
